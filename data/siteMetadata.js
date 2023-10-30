@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'Personal Blog ',
   author: 'Prabhat',
-  headerTitle: 'TailwindBlog',
+  // headerTitle: 'TailwindBlog',
   description: 'I am a software engineer 🧑🏻‍💻 based in Hyderabad, India, who enjoys building things.',
   language: 'en-us',
   theme: 'dark', // system, dark or light
