@@ -23,10 +23,10 @@ const siteMetadata = {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.
     // supports Plausible, Simple Analytics, Umami, Posthog or Google Analytics.
-    // umamiAnalytics: {
-    //   // We use an env variable for this site to avoid other users cloning our analytics ID
-    //   umamiWebsiteId: process.env.NEXT_UMAMI_ID, // e.g. 123e4567-e89b-12d3-a456-426614174000
-    // },
+    umamiAnalytics: {
+      // We use an env variable for this site to avoid other users cloning our analytics ID
+      umamiWebsiteId: '3cb1b39a-4dc9-4f58-bcb4-c257e61d9ac5', // e.g. 123e4567-e89b-12d3-a456-426614174000
+    },
     // plausibleAnalytics: {
     //   plausibleDataDomain: '', // e.g. tailwind-nextjs-starter-blog.vercel.app
     // },

@@ -5,29 +5,29 @@ import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import SocialIcon from '@/components/social-icons'
 
-const MAX_DISPLAY = 5
+const MAX_DISPLAY = 4
 
 export default function Home({ posts }) {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14">
             Hi, I’m Prabhat. 👋
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             {siteMetadata.description}
           </p>
+          <br></br>
           <Link href="/about" className="text-black-500 font-bold">
             About me &rarr;
           </Link>
           <div className="mb-3 flex space-x-4">
-            <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
             <SocialIcon kind="github" href={siteMetadata.github} size={6} />
-            <SocialIcon kind="facebook" href={siteMetadata.facebook} size={6} />
-            <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
             <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
             <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
+            <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
+            <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
           </div>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
