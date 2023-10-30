@@ -1,0 +1,93 @@
+---
+title: "Trying Out FerretDB"
+date: "2023-03-27"
+draft: false
+tags: ["open-source"]
+---
+
+# Trying out FerretDB
+
+Recently I was searching for something related to DB and stuff and found out about [FerrertDB](https://www.ferretdb.io/) on the [Hackernews](https://news.ycombinator.com/item?id=29448906). You can check the thread. It seemed pretty interesting so I thought of writing a blog post on this.
+
+Here are some of my thoughts and opinion about FerretDB.
+
+## So What’s FerretDB?
+
+Quoting from the [docs](https://docs.ferretdb.io/)
+
+`FerretDB (formerly MangoDB) is an open-source proxy that translates MongoDB wire protocol queries to SQL, with PostgreSQL as the database engine`
+
+Before jumping into what FerretDB offers, Let’s talk a little about MongoDB and Its licensing terms.
+
+### MongoDB and SSPL
+
+The MongoDB Community Server is licensed under the Server Side Public License (SSPL).
+
+Before October 2018, MongoDB had AGPL licensing. But they changed their open-source roots and the license to a new, more-restrictive license called [SSPL](https://www.mongodb.com/licensing/server-side-public-license).
+
+`Note: SSPL is not an [OSI](https://opensource.org/osd/)-approved license`
+
+You can read the SSPL in full [here](https://www.mongodb.com/licensing/server-side-public-license), but this is the crucial sentence:
+
+`If you make the functionality of the Program or a modified version available to third parties as a service, you must make the Service Source Code available via network download to everyone at no charge, under the terms of this License.`
+
+Let’s break it down with a simple example
+
+- Let’s say a company named SmallCompany uses MongoDB Community Edition Software for its data store. And the SmallCompany is not making the MongoDB functionality available as a service. As long as the company is not providing MongoDB as a service offering, then there is no problem. It’s a valid use of the license.
+
+- Let’s say another company named BigComapny offers MongoDB as a service. Then this is not the valid use of the license. They need to pay for an Enterprise license or open-source their codebases. Meaning
+
+**You might say, “ Hey I am not concerned, I am not providing DB as a service ”**
+
+But I feel like we all should be more concerned about this.
+
+- We used an open-source project and now that’s not open-source anymore. At least the updates and all. And we will have to stop using that because of that.
+- They will have a monopoly. Meaning the company behind these products will be the only one to provide cloud services. This means they will not have any competitors, thus it will result in a price increase and lack of innovation.
+- A key aspect of Mongo's success has been that it started as an open-source project, used that openness to build its community (and its product itself), and then pulled the rug out from under everyone to gain an advantage. MongoDB's decision to no longer offer a true open-source option for their software is exploitative and a slap in the face to every open-source developer.
+
+**We should ask ourselves more questions**
+
+- How can a software organization ask others to give back to the community while they are not using open-source anymore?
+- How can a company ask others to open-source its source code, even if it does not publish the source code of its cloud services?
+- How can a company declare that it’s open-source while using non-open-source licenses like SSPL?
+
+**I am not an expert but probably a better way would have been**
+
+- If the company needs to be profitable, it should provide an enterprise license and premium service support, etc.
+- Companies can use copyleft licenses to ensure that modifications they make to code will be shared with the community.
+
+**If a company goes for SSPL and then**
+
+- lose many independent contributors and employees of big firms that contributed to your open-source software
+- Your product could be associated with an unflattering buzz.
+
+These are my thoughts and opinion. It may be argumentative but this is what I feel.
+
+You may read more detailed explanations regarding SSPL and all from the link posted at the end.
+
+## What does FerretDB solve?
+
+If you have previous experience using MongoDB, You can use FerretDB as a proxy layer and use the same existing commands, and queries of MongoDB in your application. FerretDB converts MongoDB wire protocol queries to SQL, using Postgres as its database engine.
+
+### My experience
+
+I thought of giving it a try and build a simple REST-API application using FerretDB. It was just simple CRUD operations. You can find my Github repository here
+
+[https://github.com/thecaffeinedev/rest-api-ferretdb](https://github.com/thecaffeinedev/rest-api-ferretdb)
+
+FerretDB is still in the early stage and in active development. I will surely try more complex queries later on.
+
+Do give it a [star](https://github.com/FerretDB/FerretDB). They are doing some awesome work.
+
+Thanks
+
+### Good Reads and References
+
+- [https://www.percona.com/blog/why-is-mongodbs-sspl-bad-for-you/](https://www.percona.com/blog/why-is-mongodbs-sspl-bad-for-you/)
+- [https://www.percona.com/blog/why-sspl-is-bad-for-you-part-2/](https://www.percona.com/blog/why-sspl-is-bad-for-you-part-2/)
+- [https://www.scylladb.com/2018/10/22/the-dark-side-of-mongodbs-new-license/](https://www.scylladb.com/2018/10/22/the-dark-side-of-mongodbs-new-license/)
+- [https://news.ycombinator.com/item?id=29448906](https://news.ycombinator.com/item?id=29448906)
+- [https://blog.ferretdb.io/open-source-is-in-danger/](https://blog.ferretdb.io/open-source-is-in-danger/)
+- [https://blog.ferretdb.io/5-database-alternatives-mongodb-2023/](https://blog.ferretdb.io/5-database-alternatives-mongodb-2023/)
+- [https://igorkotua.com/strong-oss-licenses/](https://igorkotua.com/strong-oss-licenses/)
+- [https://blog.opensource.org/the-sspl-is-not-an-open-source-license/](https://blog.opensource.org/the-sspl-is-not-an-open-source-license/)

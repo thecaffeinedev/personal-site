@@ -9,7 +9,7 @@ const siteMetadata = {
   siteUrl: process.env.NODE_ENV === 'production' ? 'https://iprabhat.dev' : 'http://localhost:3001',
   siteRepo: 'https://github.com/TheCaffeineDev/personal-site',
   siteLogo: '/static/images/programmer.png',
-  // socialBanner: '/static/images/twitter-card.png',
+  socialBanner: '/static/images/twitter-card.png',
   // mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'iprabhatdev@gmail.com',
   github: 'https://github.com/thecaffeinedev',

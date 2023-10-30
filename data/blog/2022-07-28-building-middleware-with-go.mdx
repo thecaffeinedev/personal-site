@@ -1,0 +1,223 @@
+---
+title: "Building Middleware with Go"
+date: "2022-07-28"
+draft: false
+tags: ["go"]
+---
+
+## **Introduction**
+
+Middleware is used when clients running on different computers communicate with servers. We will go through what middleware is, its usage scenarios, and how it is built-in Go.
+
+### **What is HTTP Middleware**
+
+To better understand HTTP middleware, let's first explain some basic concepts. If a developer wants to establish communication between two computers (one of which provides resources or services for the other), he/she will build a client/server system to do so. The server waits for the client to request a resource or service, and forwards the requested resource to the client in response. The requested resource or service may be:
+
+- Authentication - Client identity verification
+- Authorization - Confirm whether the client has access to a specific service provided by the server
+- Provide services
+- Ensure data security, ensure that clients cannot access unauthorized data, and prevent data theft
+
+Servers are divided into two categories: stateless and stateful. Stateless servers do not care about the client's communication state, while stateful servers do.
+
+**_Middleware is a software entity that connects a software or enterprise application to another software application and constitutes a distributed system. HTTP requests are sent to the API server, and the server returns an HTTP response to the client._**
+
+Middleware has the ability to receive requests and preprocess them before they reach the processing method. It will then process the concrete method and send its response to the client.
+
+## **Middleware usage scenarios**
+
+The most common usage scenarios are:
+
+- A logger to log every REST API access request
+- Authenticate the user session and keep the communication alive
+- User authentication
+- Write custom logic to extract request data
+- Append attributes to response information when serving clients
+
+## **MiddlewareHandlers**
+
+In the Go language, a middleware Handler encapsulates another `http.Handler` to pre-processes or post-process a request `http.Handler`. It sits between the Go web server and the actual handler, hence the name "middleware".
+
+![](static/images/blog/middleware.png)
+
+The following is a basic middleware Handler:
+
+```go
+package middleware
+import (
+    "fmt"
+    "net/http"
+)
+
+func middleware(handler http.Handler) http.Handler {
+     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+         fmt.Println("Executing middleware before request phase!")
+         handler.ServeHTTP(w, r)
+         fmt.Println("Executing middleware after response phase!")
+     })
+ }
+ func mainLogic(w http.ResponseWriter, r *http.Request) {
+     fmt.Println("Executing mainHandler...")
+     w.Write([]byte("OK")) } func main() {
+     // HandlerFunc return HTTP Handler
+     mainLogicHandler := http.HandlerFunc(mainLogic)
+     http.Handle("/", middleware(mainLogicHandler))
+     http.ListenAndServe(":8000", nil)
+}
+```
+
+Running the code in the terminal gives the following output:
+
+```go
+go run middleware.go
+
+Executing middleware before request phase!
+Executing mainHandler...
+Executing middleware after response phase!
+```
+
+### **Log Middleware Handler**
+
+To better explain how the logging middleware Handler works, we will actually build one and execute some methods. The following example creates two middleware Handlers: `middlewareGreetingsHandler`and `middlewareTimeHandler`. The Gorilla Mux route's `HandleFunc()`methods are used to handle middleware methods.
+
+```go
+package main
+
+import (
+    "fmt"
+    "log"
+    "net/http"
+    "os"
+    "time"
+)
+
+func middlewareGreetingsHandler(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte("Hello There!"))
+}
+
+func middlewareTimeHandler(w http.ResponseWriter, r *http.Request) {
+    curTime := time.Now().Format(time.Kitchen)
+    w.Write([]byte(fmt.Sprintf("the current time is %v", curTime)))
+}
+
+func main() {
+    addr := os.Getenv("ADDR")
+
+    mux := http.NewServeMux()
+    mux.HandleFunc("/v1/greetings", middlewareHelloHandler)
+    mux.HandleFunc("/v1/time", middlewareTimeHandler)
+
+    log.Printf("server is listening at %s", addr)
+    log.Fatal(http.ListenAndServe(addr, mux))
+}
+```
+
+First set the ADDR environment variable to a free port, and execute the `go run main.go` command to run the service:
+
+```bash
+export ADDR=localhost:8080
+go run main.go
+```
+
+After the service runs successfully, access the response information of `localhost:8080/v1/greetings`View `middlewareGreetingsHandler`the response information of `localhost:8080/v1/time`View `middlewareTimeHandler`. After completion, we need to create log middleware to record all service access request information and enumerate the request method, resource path, and processing time. First, we have to initialize a new structure to `http.Handler`implement the `ServeHTTP()`methods of the interface. This struct will have a field to trace back to the process called `http.Handler`.
+
+```go
+// Create a request log middleware Handler structure named Logger
+type Logger struct {
+    handler http.Handler
+}
+
+// ServeHTTP passes the request to the real Handler and logs the request details
+func (l *Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+    start := time.Now()
+    l.handler.ServeHTTP(w, r)
+    log.Printf("%s %s %v", r.Method, r.URL.Path, time.Since(start))
+}
+
+// NewLogger constructs a new log middleware Handler
+func NewLogger(handlerToWrap http.Handler) *Logger {
+    return &Logger{handlerToWrap}
+}
+```
+
+`NewLogger()`Receives `http.Handler`and returns a new encapsulated `Logger`instance . Due to `http.ServeMux`the satisfy `http.Handler`interface, the entire mux can be encapsulated with logging middleware. In addition to that, since `Logger`implements the `ServeHTTP()`method and satisfies the `http.Handler`interface , it can also be passed to the `http.ListenAndServe()`method instead of wrapping the mux. Finally, modify the `main()`method :
+
+```go
+func main() {
+    addr := os.Getenv("ADDR")
+
+    mux := http.NewServeMux()
+    mux.HandleFunc("/v1/greetings", middlewareGreetingsHandler)
+    mux.HandleFunc("/v1/time", middlewareTimeHandler)
+    // Wrap mux with logging middleware
+    wrappedMux := NewLogger(mux)
+
+    log.Printf("server is listening at %s", addr)
+    // Use wrappedMux instead of mux as root handler
+    log.Fatal(http.ListenAndServe(addr, wrappedMux))
+}
+```
+
+Restart the service and request the API, no matter what the request path is, all request logs will be displayed in the terminal.\*\*\*\*
+
+## **`Handlers`Logging with Gorilla's middleware**
+
+Gorilla Mux routing has a `Handlers`package that provides various middleware for common tasks, including:
+
+- `LoggingHandler`: log in Apache common log format
+- `CompressionHandler`: Compressed response information
+- `RecoveryHandler` : recover from the panic error
+
+In the following example, we use `LoggingHandler`to to implement API logging. First, install the package with the `go get` command :
+
+```bash
+go get "github.com/gorilla/handlers"
+```
+
+Import the package and use it in the `loggingMiddleware.go` program :
+
+```bash
+package main
+import (
+    "github.com/gorilla/handlers"
+    "github.com/gorilla/mux"
+
+    "log"
+    "os"
+    "net/http"
+)
+
+func mainLogic(w http.ResponseWriter, r *http.Request) {
+     log.Println("Processing request!")
+     w.Write([]byte("OK"))
+     log.Println("Finished processing request")
+ }
+
+func main() {
+     r := mux.NewRouter()
+     r.HandleFunc("/", mainLogic)
+     loggedRouter := handlers.LoggingHandler(os.Stdout, r)
+     http.ListenAndServe(":8080", loggedRouter)
+}
+```
+
+Run the service:
+
+```bash
+go run loggingMiddleware.go
+```
+
+Accessed in a browser, the `localhost:8080`following output is displayed:
+
+```bash
+2022/07/08 8:51:44 Processing request!
+2022/07/08 8:51:44 Finished processing request
+127.0.0.1 - - [08/July/2022:8:51:44 +0535] "GET / HTTP/1.1"
+200 2 127.0.0.1 - - [08/July/2022:8:51:44 +0535] "GET /favicon.ico HTTP/1.1" 404 19
+```
+
+`Handlers`This example only covers the usage of the Gorilla Mux package
+
+## Thanks
+
+If you have any questions, recommendations, or critiques, I can be reached via [Twitter](https://twitter.com/thecaffeinedev) or via my [mail](iprabhatdev@gmail.com). Feel free to reach out to me.

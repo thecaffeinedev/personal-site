@@ -1,0 +1,342 @@
+---
+title: "AWS S3 Notes"
+date: "2022-05-13"
+draft: false
+tags: ["aws"]
+---
+
+## S3 Bucket, Object, Encryption
+
+### S3
+
+- Object-based storage is spread across multiple devices and facilities. Storage that can be scaled indefinitely.
+
+### Bucket
+
+- File vault
+- It must have a globally unique name.
+- Defined at the Region level
+- There is a naming convention
+  - no capital letters
+  - not underscore
+  - 3-63 characters
+  - No IP
+  - Must start with lower_case_letter or number
+
+### Object
+
+- Objects have keys.
+- `key`
+  means full path
+  - s3://my-bucket/`prabhat.jpg`
+  - s3://my-bucket/`my_folder1/another_folder/prabhat.jpg`
+- key consists of prefix + object name
+- There is no concept of a directory. (The UI is made of keys like directories)
+- The object value is the body of the content.
+  - Max Object Size : 5TB(5000GB)
+  - If you are uploading an object larger than 5GB, you should use a `multi-part upload`
+- Metadata (system metadata)
+- Tags
+- Version ID
+
+### Versioning
+
+- Versioning of files inside S3 is possible.
+- Available at the bucket level
+- If you overwrite the same key, the version is incremented.
+- _note_
+  - Protection from accidental deletion
+  - Easy to roll back
+  - Files uploaded with versioning off are version null.
+  - When you remove versioning from a bucket, you don't get rid of the old version, it removes the versioning for the new file.
+  - If you delete a file with versioning turned on, the Delete Marker will only be attached. (The previous version remains as is)
+
+### Object encryption
+
+- There are 4 encryption methods
+  - SSE-S3: Encrypting objects using AWS-managed keys
+  - SSE-KMS: AWS Key Management Service
+  - SSE-C: Unique Encryption Key
+  - Client Side Encryption: Encrypted by the client
+
+### SSE-S3
+
+- Server side encryption
+- Encryption is managed by Amazon s3.
+- Uses AES-256 encryption
+- `"x-amz-server-side-encryption": "AES256"`
+  must be set in the header
+
+### SSE-KMS
+
+- Server side encryption
+- KMS handles encryption keys
+- Advantages of KMS: User Control + Tracking
+- `"x-amz-server-side-encryption": "aws:kms"`
+  must be set in the header.
+
+### SSE-C
+
+- Encrypt with key managed by Customer
+- S3 does not store encryption key
+- `HTTPS`
+  must be used unconditionally.
+
+### Client-side encryption
+
+- The client proceeds with encryption
+- Encrypted before sending to S3
+- Responsibility for decryption is also on the client side.
+
+## S3 Security, Websites, CORS
+
+### S3 Security
+
+- User based
+  - IAM Policies: which API calls should be allowed
+- Resource based
+  - Bucket Policies
+  - Object Access Control List (ACL)
+  - Bucket Access Control List (ACL)
+- Note: IAM policy can access s3 object
+  - If the user has permission or the resource policy is ALLOW
+  - If there is no explicit DENY
+
+### S3 Bucket Policies
+
+- JSON based
+  - How to define policy via JSON
+  - Fully defined buckets and objects
+  - Allow / Deny
+
+### Security - Other
+
+- Networking
+- Logging and Audit
+  - S3 Access Logs are stored in different buckets
+  - Author of API calls to AWS CloudTrail
+- User Security
+  - MFA Delete : Use MFA to delete
+  - Pre-Signed URLs: URLs that are only valid for a limited time
+
+### S3 Websites
+
+- S3 can host a static website and can make it accessible from www
+- website URL is
+  - bucket-name.s3-website-AWS-region.amazonaws.com
+- If 403 is displayed, you can set the bucket policy to allow for the public read.
+
+### S3 CORS
+
+- Cross Origin Resource Sharing
+- By default, web browsers allow only the same origin and block requests to hostnames of different origins.
+- Same origin
+  - [http://example.com/app1](http://example.com/app1)
+  - [http://example.com/app2](http://example.com/app2)
+- Another Origin (Cross Origin)
+  - [http://www.example.com](http://www.example.com/)
+  - [http://other.example.com](http://other.example.com/)
+- If the correct CORS header is not found, the web browser blocks the request.
+- CORS Header (ex: Access-Control-Allow-Origin) must be set.
+- When a client sends a cross-origin request to our s3 bucket, we need to enable the correct CORS header.
+
+### S3 Consistency Model
+
+- From 12/2020
+- [https://aws.amazon.com/blogs/aws/amazon-s3-update-strong-read-after-write-consistency/](https://aws.amazon.com/blogs/aws/amazon-s3-update-strong-read-after-write-consistency/)
+- Maintain Consistency (visible immediately)
+  - read/write consistency
+  - list consistency
+
+## S3 Advanced 1
+
+### S3 MFA Delete
+
+- Regulate Behavior Using Multi-Factor Authentication (MFA)
+- You must enable versioning to use it.
+- If you need MFA
+  - Permanently delete an object
+  - Suspending bucket versioning
+- When MFA is not required
+  - versioning enable
+  - deleted version listing
+- Only the bucket owner can set it.
+- Not from the console, CLI only, root account only.
+
+### S3 Default Encryption vs Bucket policy
+
+- If you want to force encryption, you can set a bucket policy to prevent it if there is no encryption header.
+- Another way is to use the s3 default encryption option.
+- Bucket policy is computed before default encryption
+
+### S3 access log
+
+- To log all requests to access a bucket for auditing purposes.
+- Stored in another bucket
+- May be analyzed using Athena or other analysis tools.
+- Do not use the same monitoring bucket and logging bucket. (Logging loop - huge capacity)
+
+### S3 Replication
+
+- When you want to copy a bucket to a bucket in another region.
+- Versioning of source and destination must be enabled
+- Cross Region Replication (CRR)
+- Same Region Replication (SRR)
+- Buckets can be in different accounts.
+- Replication is asynchronous
+- Appropriate IAM permissions must be granted to s3
+- CRR: Regulatory Compliance, Faster Data Access Times
+- SRR: log aggregation, replication of production_test data
+- Only new objects after being activated are duplicated.
+- DELETE case
+  - Delete marker can also be duplicated
+  - Deleting a version is not replicated
+- No chain replication
+  - When bucket 1 is replicated to bucket 2 and bucket 2 is replicated to bucket 3
+  - Bucket 1 was not replicated in Bucket 3
+
+### S3 Presigned URLs
+
+- How to temporarily approve upload to S3 or download from S3
+
+# S3 Advanced 2
+
+### S3 storage class
+
+- Amazon S3 Standard - General Purpose
+- Amazon S3 Standard-Infrequent Access(IA)
+- Amazon S3 One Zone-Infrequent Access
+- Amazon S3 Intelligent Tiering
+- Amazon Glacier
+- Amazon Glacier Deep Archive
+- Amazon S3 Reduced Redundancy Storage (deprecated)
+
+### S3 Standard - General Purpose
+
+- Durability, no object loss, availability: 99.9999999%
+- Can withstand two dysfunctions at the same time
+- Very general use
+
+### S3 Standard - Infrequent Access(IA)
+
+- Data that is accessed infrequently but needs to be accessed quickly
+- availability
+- Less expensive than S3 Standard
+- For disaster recovery, backup, and storage of unused data
+
+### S3 One Zone - Infrequent Access(IA)
+
+- The IA function is the same, and it is stored in only one AZ.
+- Availability is a bit low, but latency is low and high throughput can be expected.
+- Data is lost when AZ is blown up
+- Supports encryption.
+- 20% cheaper than IA
+- Used to save backup files, image thumbnails, etc.
+
+### S3 Intelligent Tiering
+
+- Low latency, high performance same as S3 standard
+- There is a tiering fee along with a small monitoring fee every month.
+- Tiering is the storage of high performance / low performance according to usage.
+- Data movement occurs automatically between universal S3 and S3 IA
+
+### AWS Glacier
+
+- low-cost object storage
+- For backup / archiving
+- For storage for a very long period of time (10 years)
+- An alternative to magnetic tape storage
+- It's very cheap at $0.004 per GB, but it comes at a retrieval cost.
+- Each item is `Archive`
+  called and can store up to 40TB.
+- `Vaults`
+  Archives are stored in a safe called, not a bucket.
+
+### AWS Glacier & Glacier Deep Archive
+
+- 3 recovery options
+  - Expedited (1~5)
+  - Standard (3~5 hours)
+  - Bulk (5-12 hours)
+  - Minimum storage period: 90 days
+- Deep Archive: Storage for a longer period of time
+  - Standard (12 hours)
+  - Bulk (48 hours)
+  - Minimum storage period: 180 days
+
+### S3 Lifecycle Rules
+
+- Objects can be moved between storage classes
+- Frequently accessed objects are STANDARD_IA
+- Objects that do not need real-time are GLACIER or DEEP_ARCHIVE
+- Although it is possible to move directly, it is also possible to move automatically using lifecycle constructs.
+
+### Lifecycle rules
+
+- Transition actions: define when an object will be moved to another storage class
+  - Transfer to Standard IA class after 60 days
+  - Move to Glacier class after 6 months
+- Expiration actions: Deleting an object after a period of time has elapsed.
+  - Access logs can be set to be cleared after 365 days
+  - Can be used to delete old versions of files
+  - Can be used to clear incomplete multi-part uploads
+- Rules can be created with specific prefixes
+- Rules can be defined for specific tags
+
+### S3 Lifecycle Rule Scenario 1
+
+- When the application creates a user profile, it is uploaded to s3.
+- These thumbnails can be easily regenerated and need to be kept for 45 days.
+- Original images must be able to be restored immediately for 45 days, and after 45 days, you can wait up to 6 hours.
+
+=> Keep the original S3 in standard and send it to GLACIER after 45 days. => Thumbnails are placed in ONEZONE_IA and deleted after 45 days (because re-creation is possible)
+
+### S3 Lifecycle Rule Scenario 2
+
+- Recover deleted s3 immediately for 15 days
+- Objects deleted for up to 1 year can be restored within 48 hours
+
+=> S3 versioning => If it is not the current version, move it to S3_IA (restore immediately) => After 15 days, move it to DEEP_ARCHIVE (can be restored within 48 hours)
+
+### S3 Analysis - Storage Class Analysis
+
+- You can set up s3 analytics to decide when to send objects from standard to standard_ia.
+- Only works with standard -> standard_ia
+- It takes 24-48 hours to activate for the first time
+- Good for improving lifecycle rules
+
+### S3 - Baseline Performance
+
+- Amazon S3 automatically scales to handle a very large number of requests.
+- The latency is very short.
+- 3500 put/copy/post/delete, 5500 get per (second, prefix)
+- object path => prefix
+  - bucket/folder1/sub1/file => /folder1/sub1/
+  - bucket/folder1/sub2/file => /folder1/sub2/
+  - bucket/1/file => /1/
+  - bucket/2/file => /2/
+
+### S3 - KMS Restrictions
+
+- When using SSE-KMS, it is affected by KMS limit
+- When uploading, the KMS API called GenerateDataKey is called.
+- When downloading, the KMS API called Decrypt is called.
+- KMS has a quota limit per second
+- You can request a quota increase through the service quotas console.
+
+### S3 - Performance
+
+- Multipart Upload
+  - 100 MB or more per file
+  - Used for files larger than 5GB
+  - Can be uploaded at the same time
+- S3 Transfer Acceleration
+  - Move files to a nearby edge location
+  - Faster transfers from edge locations to buckets over the private network
+  - Compatible with split uploads
+
+### S3 Performance - S3 Byte-Range Fetches
+
+- When requesting a GET request, a specific object is divided into small byte units in a byte range.
+- request in parallel
+- Provides better recovery from failures (requests only partial data)

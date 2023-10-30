@@ -1,0 +1,168 @@
+---
+title: "docker cheatsheet"
+date: "2021-06-16"
+draft: false
+tags: ["docker"]
+---
+
+# Docker Cheatsheet
+
+## Basics
+
+### Dockerfile
+
+A text file that contains all commands, in order, needed to build a given image. A Dockerfile adheres to a specific format and set of instructions which you can find at [Dockerfile reference](https://docs.docker.com/engine/reference/builder/). You can also find common [Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) on the official website.
+
+```Dockerfile
+FROM python:3.8-alpine
+RUN mkdir /app
+ADD . /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+CMD ["python", "app.py"]
+```
+
+### Multi-stage builds
+
+With [multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/), you use multiple FROM statements in your Dockerfile. Each FROM instruction can use a different base, and each of them begins a new stage of the build. You can selectively copy artifacts from one stage to another, leaving behind everything you don’t want in the final image.
+
+```Dockerfile
+FROM nginx
+
+EXPOSE 8000
+
+COPY --from=builder /app/build /usr/share/nginx/html
+```
+
+### .dockerignore
+
+To exclude files not relevant to the build use a [dockerignore](https://docs.docker.com/engine/reference/builder/#dockerignore-file) file.
+
+```
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.coverage.*
+.cache
+coverage.xml
+*.cover
+*.log
+.mypy_cache
+.pytest_cache
+.hypothesis
+```
+
+## Images
+
+An [image](https://docs.docker.com/language/nodejs/build-images/) is an executable package that includes everything needed to run an application - the code, a runtime, libraries, environment variables, and configuration files.
+
+```
+docker build .                          # Build image
+docker build -t <image>:<tag> .         # Build image with tag
+```
+
+```
+docker images -a                        # List all images on this machine
+docker image rm <image>                 # Remove image from this machine
+```
+
+## Containers
+
+A [container](https://docs.docker.com/language/nodejs/run-containers/) is a runtime instance of an image - what the image becomes in memory when executed.
+
+```
+docker create -t <image>                # Create container
+docker start -i <container>             # Start container
+docker run -it <image>                  # Create and start container
+```
+
+```
+docker ps -a                            # Show all running containers
+docker container ls -a                  # Show all containers
+
+docker stop <container>                 # Gracefully stop the container
+docker kill <container>                 # Force shutdown of the container
+docker rm <container>                   # Remove container from this machine
+```
+
+## Utility
+
+```
+# Remove all unused containers, networks and images
+docker system prune
+
+# Remove all unused volumes
+docker volume prune
+
+# Stop all running containers
+docker stop $(docker ps -aq)
+
+# Delete all stopped containers
+docker rm $(docker ps -aq)
+```
+
+## Debug
+
+```
+docker logs <container>
+docker exec -it <container> <command>
+```
+
+## Volumes
+
+### Host volumes/Bind Mounts
+
+Use bind mounts to give your container access to your source code. The physical host file system is mounted into the virtual file system. Changes are propagated back to the Docker host.
+
+```
+docker run -v /home/caffeinedev/work:/var/lib/postgresql/data
+```
+
+### Anonymous Volumes
+
+The location of anonymous volumes is managed by Docker. Note that it can be difficult to refer to the same volume when it is anonymous. Anonymous volumes have no specific source so when the container is deleted, instruct the Docker Engine daemon to remove them.
+
+```
+docker run -v /var/lib/postgresql/data
+```
+
+### Named volumes
+
+Named volumes can be referred to by specific names.
+
+```
+docker run -v data:/var/lib/postgresql/data
+```
+
+## Configuration
+
+For production, use secrets to store sensitive application data used by services, and use configs for non-sensitive data such as configuration files.
+
+```
+docker config create
+docker secret create
+```
+
+## Docker-Compose
+
+[Compose](https://docs.docker.com/compose/) is a tool for defining and running multi-container Docker applications.
+
+### Basics
+
+```
+docker-compose up                     # Create and start one or more containers
+docker-compose up -d                  # Don't show terminal
+docker-compose up --build             # Force rebuilding
+docker-compose up --force-recreate    # Force recreate
+
+docker-compose -f docker-compose.override.yml up
+
+docker-compose down
+docker-compose ps -a
+```
+
+Docker-compose is a whole different topic to talk about. Maybe I will write a different blog post for it.

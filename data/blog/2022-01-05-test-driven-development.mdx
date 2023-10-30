@@ -1,0 +1,99 @@
+---
+title: "Test driven development"
+date: "2022-01-05"
+draft: false
+tags: ["software-dev"]
+---
+
+# Test driven development
+
+If you want to understand the basics of the TDD, please read this [freecodecamp blog.](https://www.freecodecamp.org/news/test-driven-development-what-it-is-and-what-it-is-not-41fa6bca02a2/)
+
+### 3 rules to follow while doing TDD
+
+Bob Martin describes Test-Driven Development using these three simple rules:
+
+1.  Do not write production code unless it is to make a failing unit test pass.
+2.  Do not write more of a unit test than is sufficient to fail, and build failures are failures.
+3.  Do not write more production code than is sufficient to pass the one failing unit test.
+
+Even though this sounds restrictive, it is a very productive and fun way to develop software.
+
+### Which tests should I write first?
+
+**Simplest, but interesting** : Write the most concise and meaningful tests you can think of.
+
+### Order of TDD
+
+red ➡ green ➡ refactor cycle
+
+1.  Write test before production code
+2.  Writing the minimum code for failing test(RED)
+3.  Write simplest code passing the test (GREEN)
+4.  Refactoring (go back to 2, if no more test cases come to mind, go to 5)
+5.  Don't write any test before passing existing ones
+
+`Note:` Step 4 is not optional. If step 4 is ignored, the code is dirty even after TDD.
+
+Remember that refactoring is a natural and natural thing to do, comparable to washing your hands after using the bathroom.
+
+### Getting stuck
+
+There are times when you will get stuck during test-driven development. In this case, the writer runs into the idea that he can't make all the test cases pass unless he erases and rewrites the existing code.
+
+It is mainly caused by the following two cases.
+
+- you wrote the wrong test
+- The prod code is too specific (mainly occurs if you do not follow the principle of Most simple, but interesting)
+
+### TDD Benefits
+
+- Because the specification is set first and the prod code is implemented, the developer eliminates unnecessary thoughts when writing the code.
+- Because we write the tests first, the code is decoupled. Naturally, a good design can be obtained.
+
+### UI Test?
+
+Since the UI is exposed to too many changes, it can take more time and effort to write very specific test code.
+
+Usually, UI tests are often omitted, and even if they are written, they are written very rough. Rough means that the React action is properly triggered and the style of the component with a certain text is changed as desired.
+
+It is sometimes replaced with a visual regression test. A typical library for this is [storybook](https://storybook.js.org/docs/guides/guide-react/) .
+
+### Practice TDD
+
+Just google "TDD kata".
+
+### Tests != TDD
+
+Writing tests does not mean TDD. TDD is when your design is guided by the tests. By following the red, green, refactor steps the design will emerge through writing the minimal amount of code to make your tests pass.
+
+If you write all of your code first then go back to add tests, you are not using TDD.
+
+### gradual improvement
+
+If you do TDD, you will naturally do refactoring, and if you separate modules by responsibility through refactoring, you will naturally get a good design. This is called gradual improvement.
+
+What this means is that it is much more efficient to not get too hung up on design from the start, but to draw a rough design on the blackboard and then try to implement it directly. Because pretty diagrams can only be obtained when the implementation is complete.
+
+According to someone who has actually experienced it, it goes something like this:
+
+1.  Write a test that passes
+2.  Once implemented through TDD as per requirements
+3.  Refactoring until the design is revealed through refactoring in TDD
+4.  Looking at the architecture, separation of responsibilities. At this stage, all operations have already been performed successfully, and since the test has been obtained, changes are possible.
+5.  refactoring
+6.  Create a diagram to express your design
+
+### Black-box testing & White-box testing
+
+- White-box: Test the internal source code. Write tests for conditional statements in if/while and trace all executable paths.
+- Black-box: A method of inspecting the operation without knowing the internal structure or principle of operation of the software, giving correct and incorrect inputs, and checking whether the software operates as expected.
+
+These are just some of my thoughts regarding it. I will write about it more clearly and in a structured way later on.
+
+**Some good reads:**
+
+- [freecodecamp blog](https://www.freecodecamp.org/news/test-driven-development-what-it-is-and-what-it-is-not-41fa6bca02a2/)
+- [tddfellow](https://www.tddfellow.com/blog/2016/08/31/getting-stuck-while-doing-tdd-part-3-triangulation-to-the-rescue/)
+- [practical tdd](https://www.freecodecamp.org/news practical-tdd-test-driven-development-84a32044ed0b/)
+- [kata blog](https://medium.com/javarevisited/tdd-katas-5e897300a887)
