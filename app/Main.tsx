@@ -3,6 +3,7 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
+import SocialIcon from '@/components/social-icons'
 
 const MAX_DISPLAY = 5
 
@@ -17,6 +18,17 @@ export default function Home({ posts }) {
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             {siteMetadata.description}
           </p>
+          <Link href="/about" className="text-black-500 font-bold">
+            About me &rarr;
+          </Link>
+          <div className="mb-3 flex space-x-4">
+            <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
+            <SocialIcon kind="github" href={siteMetadata.github} size={6} />
+            <SocialIcon kind="facebook" href={siteMetadata.facebook} size={6} />
+            <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
+            <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
+            <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
+          </div>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
