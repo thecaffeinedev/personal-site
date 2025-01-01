@@ -13,7 +13,7 @@ const siteMetadata = {
   // mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'iprabhatdev@gmail.com',
   github: 'https://github.com/thecaffeinedev',
-  X: 'https://twitter.com/thecaffeinedev',
+  X: 'https://X.com/thecaffeinedev',
   instagram: 'https://www.instagram.com/caffeinedev/',
   youtube: 'https://www.youtube.com/channel/UC-756oKXdvH8GZEDF7GHIlw',
   stackoverflow: 'https://stackoverflow.com/users/8105979/prabhat-kumar-sahu',
