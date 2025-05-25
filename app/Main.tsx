@@ -30,8 +30,8 @@ export default function Home({ posts }) {
               </div>
 
               <div className="pt-2">
-                <Link 
-                  href="/about" 
+                <Link
+                  href="/about"
                   className="inline-flex items-center gap-2 font-semibold text-gray-900 transition-colors hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
                 >
                   About me →
@@ -47,11 +47,9 @@ export default function Home({ posts }) {
               </div>
             </div>
 
-            {/* Right Side - Code Snippet */}
             <div className="lg:col-span-2">
               <div className="rounded-lg border border-gray-200 bg-gray-50 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                {/* Terminal Header */}
-                <div className="flex items-center gap-2 rounded-t-lg border-b border-gray-200 bg-gray-100 px-3 py-2 sm:px-4 sm:py-3 dark:border-gray-600 dark:bg-gray-700">
+                <div className="flex items-center gap-2 rounded-t-lg border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700 sm:px-4 sm:py-3">
                   <div className="flex gap-2">
                     <div className="h-3 w-3 rounded-full bg-red-500"></div>
                     <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
@@ -90,7 +88,9 @@ export default function Home({ posts }) {
                         <div>
                           <span className="text-red-600 dark:text-red-400">Interests</span>
                           <span className="text-gray-700 dark:text-gray-300">:</span>{' '}
-                          <span className="text-green-600 dark:text-green-400">"Distributed Systems"</span>
+                          <span className="text-green-600 dark:text-green-400">
+                            "Distributed Systems"
+                          </span>
                           <span className="text-gray-700 dark:text-gray-300">,</span>
                         </div>
                       </div>
@@ -122,21 +122,21 @@ export default function Home({ posts }) {
             {posts.slice(0, MAX_DISPLAY).map((post) => {
               const { slug, date, title, summary, tags } = post
               return (
-                <article 
-                  key={slug} 
+                <article
+                  key={slug}
                   className="group rounded-lg p-4 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800/50"
                 >
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-4">
-                    <time 
+                    <time
                       dateTime={date}
                       className="text-sm font-medium text-gray-500 dark:text-gray-400 sm:min-w-[80px]"
                     >
-                      {new Date(date).toLocaleDateString('en-US', { 
-                        month: 'short', 
-                        day: 'numeric' 
+                      {new Date(date).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
                       })}
                     </time>
-                    
+
                     <div className="flex-1">
                       <h2 className="text-lg font-semibold leading-tight">
                         <Link
@@ -146,7 +146,7 @@ export default function Home({ posts }) {
                           {title}
                         </Link>
                       </h2>
-                      
+
                       <div className="mt-1 flex flex-wrap gap-2">
                         {tags.slice(0, 2).map((tag) => (
                           <span

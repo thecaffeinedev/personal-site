@@ -65,7 +65,7 @@ input:-webkit-autofill:focus {
 }
 
 .nav-link:hover {
-  transform: translateY(-1px); 
+  transform: translateY(-1px);
   transition: transform 0.2s ease;
 }
 
