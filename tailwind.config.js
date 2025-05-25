@@ -22,7 +22,14 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['var(--font-space-grotesk)', ...fontFamily.sans],
+        sans: [
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'sans-serif',
+        ],
       },
       colors: {
         primary: colors.green,
@@ -32,8 +39,19 @@ module.exports = {
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
+            color: theme('colors.gray.900'),
+            lineHeight: '1.7',
+            p: {
+              fontWeight: '400',
+              lineHeight: '1.7',
+            },
+            li: {
+              fontWeight: '400',
+              lineHeight: '1.6',
+            },
             a: {
               color: theme('colors.primary.500'),
+              fontWeight: '500',
               '&:hover': {
                 color: `${theme('colors.primary.600')}`,
               },
@@ -48,20 +66,41 @@ module.exports = {
             },
             code: {
               color: theme('colors.indigo.500'),
+              fontWeight: '500',
+            },
+            strong: {
+              fontWeight: '600',
             },
           },
         },
         invert: {
           css: {
+            color: theme('colors.gray.100'),
+            p: {
+              color: theme('colors.gray.100'),
+              fontWeight: '450',
+            },
+            li: {
+              color: theme('colors.gray.100'),
+              fontWeight: '450',
+            },
+            strong: {
+              color: theme('colors.gray.50'),
+              fontWeight: '600',
+            },
             a: {
-              color: theme('colors.primary.500'),
+              color: theme('colors.primary.400'),
+              fontWeight: '500',
               '&:hover': {
-                color: `${theme('colors.primary.400')}`,
+                color: `${theme('colors.primary.300')}`,
               },
-              code: { color: theme('colors.primary.400') },
+              code: { color: theme('colors.primary.300') },
             },
             'h1,h2,h3,h4,h5,h6': {
-              color: theme('colors.gray.100'),
+              color: theme('colors.gray.50'),
+            },
+            code: {
+              color: theme('colors.indigo.300'),
             },
           },
         },

@@ -137,8 +137,8 @@ export default function ListLayout({
         <div>
           {!filteredBlogPosts.length && 'No posts found.'}
           {groupedPosts.map(({ year, posts: yearPosts }) => (
-            <div key={year} className="mt-8">
-              <h2 className="text-gray-1200 mb-4 text-4xl font-bold dark:text-gray-100">{year}</h2>
+            <div key={year} className="mt-6">
+              <h2 className="text-gray-1200 mb-4 text-2xl font-bold dark:text-gray-100">{year}</h2>
               <ul>
                 {yearPosts.map((post) => {
                   const { path, date, title, summary, tags } = post
@@ -153,7 +153,7 @@ export default function ListLayout({
                         </dl>
                         <div className="space-y-3 xl:col-span-3">
                           <div>
-                            <h3 className="text-xl font-bold leading-8 tracking-tight">
+                            <h3 className="text-lg font-bold leading-8 tracking-tight">
                               <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
                                 {title}
                               </Link>

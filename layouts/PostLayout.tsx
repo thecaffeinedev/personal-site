@@ -38,21 +38,21 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
       <ScrollTopAndComment />
       <article>
         <div className="mx-auto max-w-3xl">
-          <header className="pt-6 pb-8">
+          <header className="pb-8 pt-6">
             <div className="space-y-6 text-center">
               <div>
-                <time 
+                <time
                   dateTime={date}
                   className="text-base font-medium text-gray-500 dark:text-gray-400"
                 >
                   {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
                 </time>
               </div>
-              
+
               <div>
                 <PageTitle>{title}</PageTitle>
               </div>
-              
+
               {tags && (
                 <div className="flex flex-wrap justify-center gap-2">
                   {tags.map((tag) => (
@@ -92,21 +92,21 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
             </div>
           </header>
 
-          <div className="prose mx-auto max-w-none dark:prose-invert">
+          <div className="prose max-w-none pb-8 pt-10 text-gray-900 dark:prose-invert dark:text-gray-100">
             {children}
           </div>
 
           <footer className="mt-12 space-y-8 border-t border-gray-200 pt-8 dark:border-gray-700">
             <div className="flex justify-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-              <Link 
-                href={discussUrl(path)} 
+              <Link
+                href={discussUrl(path)}
                 rel="nofollow"
                 className="hover:text-primary-500 dark:hover:text-primary-400"
               >
                 Discuss on X
               </Link>
               <span>•</span>
-              <Link 
+              <Link
                 href={editUrl(filePath)}
                 className="hover:text-primary-500 dark:hover:text-primary-400"
               >
@@ -121,7 +121,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                       Previous
                     </p>
-                    <Link 
+                    <Link
                       href={`/${prev.path}`}
                       className="mt-1 block text-lg font-medium text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     >
@@ -134,7 +134,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                       Next
                     </p>
-                    <Link 
+                    <Link
                       href={`/${next.path}`}
                       className="mt-1 block text-lg font-medium text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     >
