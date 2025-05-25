@@ -58,3 +58,23 @@ input:-webkit-autofill:focus {
   display: inline-block;
   vertical-align: middle;
 }
+
+.nav-link {
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.nav-link:hover {
+  transform: translateY(-1px); 
+  transition: transform 0.2s ease;
+}
+
+.nav-emoji {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+}
+
+@media (max-width: 480px) {
+  .nav-emoji {
+    display: none;
+  }
+}
