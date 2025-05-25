@@ -40,7 +40,6 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
         <div className="mx-auto max-w-3xl">
           <header className="pt-6 pb-8">
             <div className="space-y-6 text-center">
-              {/* Date */}
               <div>
                 <time 
                   dateTime={date}
@@ -93,7 +92,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
             </div>
           </header>
 
-          <div className="prose mx-auto max-w-none dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary-500 hover:prose-a:text-primary-600 dark:hover:prose-a:text-primary-400 prose-pre:bg-gray-50 dark:prose-pre:bg-gray-900 prose-code:text-primary-600 dark:prose-code:text-primary-400">
+          <div className="prose mx-auto max-w-none dark:prose-invert">
             {children}
           </div>
 
