@@ -1,7 +1,7 @@
 ---
-title: "Javascript Notes"
-date: "2018-05-05"
-tags: ["javascript"]
+title: 'Javascript Notes'
+date: '2018-05-05'
+tags: ['javascript']
 draft: false
 ---
 
@@ -65,21 +65,21 @@ VSCode has integrated terminal, as you can see I have used the command node to e
 
 // A variable is a symbolic name for a value.
 // Variables are declared with the let keyword:
-let x; // Declare a variable named x.
+let x // Declare a variable named x.
 
 // Values can be assigned to variables with an = sign
-x = 0; // Now the variable x has the value 0
-x; // => 0: A variable evaluates to its value.
+x = 0 // Now the variable x has the value 0
+x // => 0: A variable evaluates to its value.
 
 // JavaScript supports several types of values
-x = 1; // Numbers.
-x = 0.01; // Numbers can be integers or reals.
-x = "hello world"; // Strings of text in quotation marks.
-x = "JavaScript"; // Single quote marks also delimit strings.
-x = true; // A Boolean value.
-x = false; // The other Boolean value.
-x = null; // Null is a special value that means "no value."
-x = undefined; // Undefined is another special value like null.
+x = 1 // Numbers.
+x = 0.01 // Numbers can be integers or reals.
+x = 'hello world' // Strings of text in quotation marks.
+x = 'JavaScript' // Single quote marks also delimit strings.
+x = true // A Boolean value.
+x = false // The other Boolean value.
+x = null // Null is a special value that means "no value."
+x = undefined // Undefined is another special value like null.
 ```
 
 Two other very important _types_ that JavaScript programs can manipulate are objects and arrays. We will talk about that later.
@@ -95,7 +95,7 @@ Two other very important _types_ that JavaScript programs can manipulate are obj
 ##### Variable Declarations
 
 - ```javascript
-  let;
+  let
   ```
 
   - Cannot be called before declared
@@ -112,33 +112,33 @@ Two other very important _types_ that JavaScript programs can manipulate are obj
 ```javascript
 // Operators act on values (the operands) to produce a new value.
 // Arithmetic operators are some of the simplest:
-2 + 2; // => 4: addition
-4 - 2; // => 2: subtraction
-2 * 2; // => 4: multiplication
-4 / 2; // => 2: division
-points[1].x - points[0].x; // => 1: more complicated operands also work
-"53" + "2"; // => "532": + adds numbers, concatenates strings
+2 + 2 // => 4: addition
+4 - 2 // => 2: subtraction
+2 * 2 // => 4: multiplication
+4 / 2 // => 2: division
+points[1].x - points[0].x // => 1: more complicated operands also work
+'53' + '2' // => "532": + adds numbers, concatenates strings
 
 // JavaScript defines some shorthand arithmetic operators
-let count = 0; // Define a variable
-count++; // Increment the variable
-count--; // Decrement the variable
-count += 2; // Add 2: same as count = count + 2;
-count *= 3; // Multiply by 3: same as count = count * 3;
-count; // => 6: variable names are expressions, too.
+let count = 0 // Define a variable
+count++ // Increment the variable
+count-- // Decrement the variable
+count += 2 // Add 2: same as count = count + 2;
+count *= 3 // Multiply by 3: same as count = count * 3;
+count // => 6: variable names are expressions, too.
 
 // Equality and relational operators test whether two values are equal,
 // unequal, less than, greater than, and so on. They evaluate to true or false.
 let x = 4,
-  y = 5; // These = signs are assignment, not equality tests
-x === y; // => false: equality
-x !== y; // => true: inequality
-x < y; // => true: less-than
-x <= y; // => true: less-than or equal
-x > y; // => false: greater-than
-x >= y; // => false: greater-than or equal
-"four" === "five"; // => false: the two strings are different
-(false ===
+  y = 5 // These = signs are assignment, not equality tests
+x === y // => false: equality
+x !== y // => true: inequality
+x < y // => true: less-than
+x <= y // => true: less-than or equal
+x > y // => false: greater-than
+x >= y // => false: greater-than or equal
+'four' === 'five' // => false: the two strings are different
+;(false ===
   (x > y)(
     // => true: false is equal to false
 
@@ -149,8 +149,8 @@ x >= y; // => false: greater-than or equal
     // => true: both comparisons are true. && is AND
     x > 4
   )) ||
-  y < 5; // => false: neither comparison is true. || is OR
-!(x === y); // => true: ! inverts a boolean value
+  y < 5 // => false: neither comparison is true. || is OR
+!(x === y) // => true: ! inverts a boolean value
 ```
 
 ##### Equality operators
@@ -202,14 +202,14 @@ x >= y; // => false: greater-than or equal
 - Returns a **string**
 
 ```javascript
-typeof 1; // 'number'
-typeof true; // 'boolean'
-typeof "Hello"; // 'string'
-typeof function () {}; // 'function'
-typeof {}; // 'object'
-typeof null; // 'object'
-typeof undefined; // 'undefined'
-typeof NaN; // 'number'
+typeof 1 // 'number'
+typeof true // 'boolean'
+typeof 'Hello' // 'string'
+typeof function () {} // 'function'
+typeof {} // 'object'
+typeof null // 'object'
+typeof undefined // 'undefined'
+typeof NaN // 'number'
 // NaN - not a number
 ```
 
@@ -245,17 +245,17 @@ typeof NaN; // 'number'
 - ex:
 
   ```javascript
-  (function () {
-    console.log("in function");
-  })();
+  ;(function () {
+    console.log('in function')
+  })()
   // can return values this way
   let app = (function () {
-    let cardId = 123;
-    console.log("in function");
-    return {};
-  })();
+    let cardId = 123
+    console.log('in function')
+    return {}
+  })()
 
-  console.log(app);
+  console.log(app)
   // [Function: app]
   ```
 
@@ -267,15 +267,15 @@ typeof NaN; // 'number'
 
   ```javascript
   let app = (function () {
-    let cardId = 123;
+    let cardId = 123
     let getId = function () {
-      return cardId;
-    };
+      return cardId
+    }
     return {
       getId: getId, //  reference
-    };
-  })();
-  console.log(app.getId());
+    }
+  })()
+  console.log(app.getId())
   // 123
   ```
 
@@ -289,10 +289,10 @@ typeof NaN; // 'number'
   let o = {
     carId: 123,
     getId: function () {
-      return this.carId;
+      return this.carId
     },
-  };
-  console.log(o.getId());
+  }
+  console.log(o.getId())
   // 123
   ```
 
@@ -308,20 +308,20 @@ typeof NaN; // 'number'
 - More examples
 
   ```javascript
-  let getId = (prefix) => prefix + 456;
-  console.log(getId("ID: ")); // ID: 456
+  let getId = (prefix) => prefix + 456
+  console.log(getId('ID: ')) // ID: 456
 
-  let getId = (prefix, suffix) => prefix + 456 + suffix;
-  console.log(getId("ID: ", "!")); // ID: 456!
+  let getId = (prefix, suffix) => prefix + 456 + suffix
+  console.log(getId('ID: ', '!')) // ID: 456!
 
   // with braces / return keyword required
   let getId = (prefix, suffix) => {
-    return prefix + 456 + suffix;
-  };
+    return prefix + 456 + suffix
+  }
   // same result as previous
 
   // use with underscore:
-  let getId = (_) => 456;
+  let getId = (_) => 456
   ```
 
 Arrow functions do **NOT** have their own `this<`value. `this`refers to enclosing context
@@ -331,10 +331,10 @@ Arrow functions do **NOT** have their own `this<`value. `this`refers to enclosin
 - ex:
 
   ```javascript
-  let trackCar = function (carId, city = "NY") {
+  let trackCar = function (carId, city = 'NY') {
     // using backticks for interpreting variables
-    console.log(`Tracking ${carId} in ${city}.`);
-  };
+    console.log(`Tracking ${carId} in ${city}.`)
+  }
   ```
 
 - Like other defaults, must be on right side.
@@ -347,11 +347,11 @@ Arrow functions do **NOT** have their own `this<`value. `this`refers to enclosin
 - Assign values in array to variables
 
 ```javascript
-let carIds = [1, 2, 5];
-let [car1, car2, car3] = carIds;
+let carIds = [1, 2, 5]
+let [car1, car2, car3] = carIds
 // with rest parameters:
-let car1, remainingCars;
-[car1, ...remainingCars] = carIds;
+let car1, remainingCars
+;[car1, ...remainingCars] = carIds
 // log
 // 1 [2, 5]
 ```
@@ -361,8 +361,8 @@ let car1, remainingCars;
 - { } instead of [ ] for objects
 
 ```javascript
-let car = { id: 5000, style: "convertible" };
-let { id, style } = car;
+let car = { id: 5000, style: 'convertible' }
+let { id, style } = car
 // log
 // 5000, convertible
 ```
@@ -370,8 +370,8 @@ let { id, style } = car;
 - Put destructuring in ( ) if variables already declared
 
 ```javascript
-let id, style;
-({ id, style } = car);
+let id, style
+;({ id, style } = car)
 ```
 
 #### Spread Syntax
@@ -380,8 +380,8 @@ let id, style;
 - Similar to rest syntax, does the opposite
 
 ```javascript
-let carIds = [100, 300, 500];
-startCars(...carIds);
+let carIds = [100, 300, 500]
+startCars(...carIds)
 ```
 
 - Can iterate through **arrays** _and_ **strings**
@@ -392,28 +392,28 @@ startCars(...carIds);
 
   ```js
   function Car() {} // capitalized name as convention`
-  let car = new Car();
+  let car = new Car()
   ```
 
 - ```js
   function Car(id) {
-    this.carId = id;
+    this.carId = id
   }
-  let car = new Car(123);
-  console.log(car.carId); // 123
+  let car = new Car(123)
+  console.log(car.carId) // 123
   ```
 
 - Method: function run on an object
 
   ```js
   function Car(id) {
-    this.carId = id;
+    this.carId = id
     this.start = function () {
-      console.log("Start: " + this.carId);
-    };
+      console.log('Start: ' + this.carId)
+    }
   }
-  let vehicle = new Car(123);
-  vehicle.start(); // Start: 123
+  let vehicle = new Car(123)
+  vehicle.start() // Start: 123
   ```
 
 ### Prototypes
@@ -421,8 +421,8 @@ startCars(...carIds);
 ```js
 // using previous example
 Car.prototype.start = function () {
-  console.log("Start: " + this.carId);
-}; // single copy, instead of one function for each object
+  console.log('Start: ' + this.carId)
+} // single copy, instead of one function for each object
 ```
 
 - Expanding Objects using Prototypes
@@ -430,9 +430,9 @@ Car.prototype.start = function () {
 
 ```js
 String.prototype.hello = function () {
-  return this.toString() + " Hello";
-};
-console.log("foo".hello()); // foo Hello
+  return this.toString() + ' Hello'
+}
+console.log('foo'.hello()) // foo Hello
 ```
 
 ### Javascript Object Notation (JSON)
@@ -440,17 +440,17 @@ console.log("foo".hello()); // foo Hello
 ```js
 let car = {
   id: 123,
-  style: "convertible",
-};
-console.log(JSON.stringify(car));
+  style: 'convertible',
+}
+console.log(JSON.stringify(car))
 // { "id": 123, "style": "convertible" }
 // Array to JSON
-let carIds = [{ carId: 123 }, { carId: 456 }, { carId: 789 }];
-console.log(JSON.stringify(carIds));
+let carIds = [{ carId: 123 }, { carId: 456 }, { carId: 789 }]
+console.log(JSON.stringify(carIds))
 //  [{ "carId": 123 }, { "carId": 456 }, ...]
 // Parsing JSON:
-let jsonIn = [{ carId: 123 }, { carId: 456 }, { carId: 789 }];
-let carIds = JSON.parse(jsonIn);
+let jsonIn = [{ carId: 123 }, { carId: 456 }, { carId: 789 }]
+let carIds = JSON.parse(jsonIn)
 // log: [ { carId: 123 }, { carId: 456 }, { carId: 789 } ]
 ```
 
@@ -461,17 +461,17 @@ let carIds = JSON.parse(jsonIn);
 Examples:
 
 ```js
-carIds.foreach((car) => console.log(car));
-carIds.foreach((car, index) => console.log(car, index));
+carIds.foreach((car) => console.log(car))
+carIds.foreach((car, index) => console.log(car, index))
 
 //  only some elements
-let convertibles = carIds.filter((car) => car.style === "convertible");
+let convertibles = carIds.filter((car) => car.style === 'convertible')
 
 // every case. find, condition, T/F, all elements
-let result = carIds.every((car) => car.carId > 0); // true
+let result = carIds.every((car) => car.carId > 0) // true
 
 // retrieve first instance matching condition
-let car = carIds.find((car) => car.carId > 500);
+let car = carIds.find((car) => car.carId > 500)
 ```
 
 ---
@@ -482,7 +482,7 @@ let car = carIds.find((car) => car.carId > 500);
 
 ```js
 class Car {}
-let car = new Car();
+let car = new Car()
 ```
 
 ### Constructors and properties
@@ -517,10 +517,10 @@ class Car() {
 ```js
 class Car extends Vehicle {
   constructor() {
-    super(); // refers back to parent Vehicle
+    super() // refers back to parent Vehicle
   }
   start() {
-    return "In Car Start" + super.start();
+    return 'In Car Start' + super.start()
   }
 }
 ```
@@ -560,8 +560,8 @@ class Car extends Vehicle {
 
   ```javascript
   let timeoutId = setTimeout(function () {
-    console.log("1 second paused");
-  }, 1000);
+    console.log('1 second paused')
+  }, 1000)
   // cancel clearTimeout(timeoutId); // or clearTimeout(id);
   ```
 
@@ -605,11 +605,11 @@ class Car extends Vehicle {
 Example:
 
 ```js
-let el = document.getElementById("elementId");
-el.textContent = "new text here";
-el.setAttribute("name", "nameValue");
-el.classList.add("myClassName");
-el.style.color = "blue";
+let el = document.getElementById('elementId')
+el.textContent = 'new text here'
+el.setAttribute('name', 'nameValue')
+el.classList.add('myClassName')
+el.style.color = 'blue'
 ```
 
 ### Promises and Error Handling
@@ -621,9 +621,9 @@ el.style.color = "blue";
 
 ```js
 try {
-  let car = newCar;
+  let car = newCar
 } catch (error) {
-  console.log("error: ", error);
+  console.log('error: ', error)
 }
 // continue execution
 ```
@@ -648,8 +648,8 @@ try {
 
   ```js
   let promise = new Promise(function (resolve, reject) {
-    setTimeout(resolve, 100, "someValue");
-  });
+    setTimeout(resolve, 100, 'someValue')
+  })
   ```
 
 - Setting a Promise

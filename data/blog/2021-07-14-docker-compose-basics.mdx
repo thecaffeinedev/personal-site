@@ -1,7 +1,7 @@
 ---
-title: "docker-compose basics"
-date: "2021-07-14"
-tags: ["docker"]
+title: 'docker-compose basics'
+date: '2021-07-14'
+tags: ['docker']
 draft: false
 ---
 
@@ -114,15 +114,15 @@ _Now you can be sure the code works if you skipped it the first time. If you’r
 Go inside the `web` directory, create new file named `index.js`.
 
 ```javascript
-const http = require("http");
+const http = require('http')
 http
   .createServer(function (req, res) {
-    const content = "<p>No films.</p>";
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.write(`<html><body><h1>Films</h1>${content}</body></html>`);
-    res.end();
+    const content = '<p>No films.</p>'
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.write(`<html><body><h1>Films</h1>${content}</body></html>`)
+    res.end()
   })
-  .listen(80);
+  .listen(80)
 ```
 
 Keeping this simple. This code will create a web server listening on port 80 which will return some HTML.
@@ -210,40 +210,37 @@ Fortunately, Docker Compose makes this really easy. Each service joins a common 
 Let’s update the web server to talk to the API. Replace `index.js` with the following code;
 
 ```javascript
-const http = require("http");
+const http = require('http')
 async function fetch(url) {
   return new Promise((resolve, reject) => {
     http
       .get(url, (res) => {
-        let data = "";
+        let data = ''
 
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on('data', (chunk) => {
+          data += chunk
+        })
 
-        res.on("end", () => {
-          resolve(JSON.parse(data));
-        });
+        res.on('end', () => {
+          resolve(JSON.parse(data))
+        })
       })
-      .on("error", (err) => {
-        reject(err);
-      });
-  });
+      .on('error', (err) => {
+        reject(err)
+      })
+  })
 }
 http
   .createServer(async function (req, res) {
-    const movies = await fetch("http://movies-api");
+    const movies = await fetch('http://movies-api')
     const content = movies
-      .map(
-        ({ universe, title, year }) =>
-          `${universe} (${title}) - Released on ${year}`
-      )
-      .reduce((list, str) => `${list}<li>${str}</li>`, "");
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.write(`<html><body><h1>Movies</h1><ul>${content}</ul></body></html>`);
-    res.end();
+      .map(({ universe, title, year }) => `${universe} (${title}) - Released on ${year}`)
+      .reduce((list, str) => `${list}<li>${str}</li>`, '')
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.write(`<html><body><h1>Movies</h1><ul>${content}</ul></body></html>`)
+    res.end()
   })
-  .listen(80);
+  .listen(80)
 ```
 
 I’ve implemented a naive `fetch()` function rather than pulling in a dependency - again keeping things simple. You’ll see that we can now refer to the API using the service name defined in the Docker Compose file as the hostname; `fetch('http://movies-api')`.
