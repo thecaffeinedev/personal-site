@@ -28,11 +28,9 @@ const Header = () => {
               <Link
                 key={link.title}
                 href={link.href}
-                className="group hidden font-medium text-gray-900 transition-all duration-200 hover:-translate-y-0.5 hover:text-primary-500 dark:text-gray-100 sm:block"
+                className="hidden font-medium text-gray-900 transition-colors hover:text-primary-500 dark:text-gray-100 sm:block"
               >
-                <span className="mr-1 inline-block transition-transform duration-300 group-hover:scale-110 group-hover:animate-bounce">
-                  {emoji}
-                </span>
+                <span className="mr-1 inline-block">{emoji}</span>
                 <span className="transition-colors duration-200">{text}</span>
               </Link>
             )
