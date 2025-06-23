@@ -1,0 +1,105 @@
+---
+title: How I Manage Multiple Git Profiles
+date: 2025-04-20
+tags:
+  - git
+  - dev-setup
+draft: false
+summary:
+---
+Since I sometimes use my personal laptop for both personal and work projects, I used to set up git config for each project folder individually. I was constantly configuring the right profile to avoid commit mix-ups, and it was getting old.
+
+I know Git supports conditional includes, but I thought it would be a good opportunity for a side project. I had the idea to build a CLI tool that can automatically detect what I'm working on, switch Git profiles, manage SSH keys, and maybe even integrate with the shell.
+
+But then I thought—why make it complicated when there’s a simple way to solve it?
+
+## What I was dealing with
+
+I have got three different setups:
+
+- Personal stuff (personal-stuff on GitHub)
+- Office Internal projects
+- Office Client projects
+
+Each one needs different name, email, SSH keys.
+
+## Setting Up The Config
+Took me like 10 minutes total.
+
+First I just organized my folders better:
+
+```
+~/dev/personal/      -  hobby projects
+~/dev/office-work/   -  work stuff  
+~/dev/office-client/ -  client work
+```
+
+Then I made separate config files for work and clients:
+
+**~/.gitconfig-office-work:**
+
+```
+[user]
+    name = "Prabhat Kumar"
+    email = "prabhat@work-office.com"
+```
+
+**~/.gitconfig-office-client:**
+
+```
+[user]
+    name = "Prabhat"
+    email = "Prabhat@work-client.com"
+```
+
+Then added these lines to my main git config:
+
+```
+[includeIf "gitdir:~/dev/office-work/**"]
+    path = ~/.gitconfig-office-work
+
+[includeIf "gitdir:~/dev/office-client/**"]
+    path = ~/.gitconfig-office-client
+```
+
+That's it. The `/**` part means any git repo in that folder.
+
+## SSH was already working
+
+I already had different SSH hosts set up:
+
+```
+Host github.com
+   User thecaffeinedev
+   IdentityFile ~/.ssh/id_personal_github
+
+Host office-git
+   HostName github.com
+   User office-user
+   IdentityFile ~/.ssh/id_office_internal
+```
+
+So I just use different URLs when cloning.
+
+## Testing it
+
+```bash
+cd ~/dev/personal/some-project
+git config user.email
+# Shows: iprabhatdev@gmail.com
+
+cd ~/dev/office-work/work-project  
+git config user.email
+# Shows: prabhat@work-office.com"
+```
+
+Works just fine. 
+## Why I was avoiding this
+
+Honestly? I think I just wanted to build something. The simple solution felt too easy, like I wasn't really solving the problem.
+
+But having organized folders is actually better anyway. Now I know exactly where everything is.
+
+## End Notes
+
+Sometimes the boring solution is the right one. Git's conditional includes do exactly what I need and I don't have to maintain some custom tool.

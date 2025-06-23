@@ -21,16 +21,10 @@ module.exports = {
         13: '3.25rem',
         14: '3.5rem',
       },
-      fontFamily: {
-        sans: [
-          'system-ui',
-          '-apple-system',
-          'BlinkMacSystemFont',
-          'Segoe UI',
-          'Roboto',
-          'sans-serif',
-        ],
-      },
+fontFamily: {
+  sans: ['Source Sans Pro', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+}
+,
       colors: {
         primary: colors.green,
         dark: '#1f1f1f',
