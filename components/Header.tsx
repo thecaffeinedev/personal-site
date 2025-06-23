@@ -4,7 +4,7 @@ import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
-import { TypingPrompt, TypingTerminal } from './TypingLogo'
+import { NormalHeading, TypingTerminal } from './TypingLogo'
 
 const Header = () => {
   return (
@@ -12,7 +12,7 @@ const Header = () => {
       <div>
         <Link href="/" aria-label="Home">
           <div className="flex items-center justify-between">
-            <TypingTerminal />
+            <NormalHeading />
           </div>
         </Link>
       </div>

@@ -2,6 +2,16 @@
 
 import { useState, useEffect } from 'react'
 
+export const NormalHeading = () => {
+  return (
+    <div className="font-mono text-lg font-semibold">
+      <span className="text-gray-500 dark:text-gray-400">~/</span>
+      <span className="text-gray-900 dark:text-gray-100">iprabhat.dev</span>
+    </div>
+  )
+}
+
+
 export const TypingPrompt = () => {
   const [text, setText] = useState('')
   const [showCursor, setShowCursor] = useState(true)
@@ -103,6 +113,8 @@ export const TypingTerminal = () => {
     </div>
   )
 }
+
+
 
 export const TypingCycle = () => {
   const texts = ['prabhat', 'developer', 'blogger', 'engineer']
