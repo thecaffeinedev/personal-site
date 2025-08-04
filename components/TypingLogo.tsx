@@ -11,7 +11,6 @@ export const NormalHeading = () => {
   )
 }
 
-
 export const TypingPrompt = () => {
   const [text, setText] = useState('')
   const [showCursor, setShowCursor] = useState(true)
@@ -113,8 +112,6 @@ export const TypingTerminal = () => {
     </div>
   )
 }
-
-
 
 export const TypingCycle = () => {
   const texts = ['prabhat', 'developer', 'blogger', 'engineer']
