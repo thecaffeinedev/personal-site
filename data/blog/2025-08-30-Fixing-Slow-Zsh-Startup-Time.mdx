@@ -1,0 +1,97 @@
+---
+title: Fixing My Slow Zsh terminal Startup
+date: 2025-08-30
+tags:
+  - dev-setup
+draft: false
+---
+
+I never really thought about how long my terminal took to open. It was always just there when I needed it. 
+
+But lately, I kept noticing this annoying delay every time I opened a new tab or window, there was this noticeable delay. Not huge, but enough to make me pause and think "why is this taking so long?"
+
+At first, I ignored it. Then it got more frustrating. Opening multiple tabs meant waiting for each one to load. So I did what any developer does - I searched around for solutions.
+
+## Looking for Solutions
+
+I found several blog posts about zsh performance optimization. People were talking about lazy loading, profiling startup times, and optimizing dotfiles. Seemed like a common problem.
+
+Everyone's `.zshrc` file is different. This file is basically your shell's configuration - it tells zsh what to load when it starts up, what aliases to create, which plugins to enable, and how to set up your environment. Over time, you accumulate stuff in there. Themes, plugins, environment variables, custom functions. It's your personal terminal setup.
+
+My `.zshrc` had accumulated a lot over the years. NVM for Node.js, virtualenvwrapper for Python, conda, various PATH exports, Oh My Zsh plugins - basically a typical developer setup.
+
+Your setup will probably be different depending on what tools you use. If you have the same slow startup issue, you'll need to figure out what's causing the delay in your case.
+
+## Using zprof to Find the Problem
+
+Zsh has a built-in profiler called `zprof` that shows where your shell spends time during startup. You can see which functions take the longest and figure out what's slowing things down.
+
+
+
+To use it, add these two lines to your `.zshrc`:
+
+- `zmodload zsh/zprof` at the very top
+- `zprof` at the very bottom
+
+```
+# at the very top
+zmodload zsh/zprof
+
+#  at the very bottom
+zprof
+```
+Then open a new terminal. You'll see a detailed breakdown of what took how long.
+
+## What I Found
+
+When I profiled my setup, I could see exactly what was taking so long:
+
+- **nvm_auto**: 246ms - NVM was auto-detecting Node versions on every startup
+- **compdump + compinit**: 350ms - The completion system was rebuilding command completions  
+- **virtualenvwrapper**: 151ms - Python environment setup was running every time
+
+These three things were taking up about 75% of my 1.2-second startup time.
+
+## The Fixes
+
+**NVM Lazy Loading**
+Instead of loading NVM immediately, I made it load only when needed:
+
+```bash
+nvm() {
+  unset -f nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  nvm "$@"
+}
+```
+
+**Faster Completions**
+Added the `-C` flag to skip security checks:
+
+```bash
+autoload -Uz compinit
+compinit -C
+```
+
+**Python Environment Lazy Loading**
+For virtualenvwrapper, I created wrapper functions that only load when called. I should mention - I currently use `uv` as my Python package manager, but I still have some older Python environments that were created with virtualenvwrapper, so I need to keep this around:
+
+```bash
+workon() {
+  if [ -z "$VIRTUALENVWRAPPER_SCRIPT" ]; then
+    source /opt/homebrew/bin/virtualenvwrapper.sh
+  fi
+  workon "$@"
+}
+```
+
+## Results
+
+My terminal startup went from 1.2 seconds to about 0.3 seconds. That's a 75% improvement. Everything still works exactly the same - the tools just load on-demand instead of upfront.
+
+The first time I use `nvm` or access a virtual environment in a session, there's a small delay while it loads. But that one-time cost is way better than every single terminal being slow.
+
+You might get different results depending on what's in your `.zshrc`, but the approach is the same: profile first, then optimize the slowest parts.
+
+## References
+- [Scott Spence's zsh optimization guide](https://scottspence.com/posts/speeding-up-my-zsh-shell)
