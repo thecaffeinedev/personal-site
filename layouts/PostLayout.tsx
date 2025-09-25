@@ -12,7 +12,7 @@ import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 const discussUrl = (path) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
+  `https://x.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -38,61 +38,52 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
       <ScrollTopAndComment />
       <article>
         <div className="mx-auto max-w-3xl">
-          <header className="pb-8 pt-6">
+          <header className="pb-12 pt-8">
             <div className="space-y-6 text-center">
-              <div>
-                <time
-                  dateTime={date}
-                  className="text-base font-medium text-gray-500 dark:text-gray-400"
-                >
-                  {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
-                </time>
-              </div>
-
               <div>
                 <PageTitle>{title}</PageTitle>
               </div>
 
-              {tags && (
-                <div className="flex flex-wrap justify-center gap-2">
-                  {tags.map((tag) => (
-                    <Tag key={tag} text={tag} />
-                  ))}
-                </div>
-              )}
-
-              <div className="border-t border-gray-200 pt-6 dark:border-gray-700">
-                {authorDetails.map((author) => (
-                  <div key={author.name} className="flex items-center justify-center space-x-4">
-                    {author.avatar && (
-                      <Image
-                        src={author.avatar}
-                        width={56}
-                        height={56}
-                        alt="avatar"
-                        className="h-14 w-14 rounded-full"
-                      />
-                    )}
-                    <div className="text-left">
-                      <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                        {author.name}
-                      </div>
-                      {author.X && (
-                        <Link
-                          href={author.X}
-                          className="text-sm text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                        >
-                          {author.X.replace('https://X.com/', '@')}
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                ))}
+              <div className="flex items-center justify-center gap-3 text-base text-gray-600 dark:text-gray-300">
+                <time dateTime={date} className="font-medium">
+                  {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+                </time>
+                <span className="text-gray-400">•</span>
+                <span className="font-medium">{content.readingTime.text}</span>
               </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
+                <div className="text-gray-500 dark:text-gray-400">
+                  By{' '}
+                  {authorDetails[0]?.linkedin ? (
+                    <Link
+                      href={authorDetails[0].linkedin}
+                      className="font-medium text-primary-600 transition-colors hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+                    >
+                      Prabhat
+                    </Link>
+                  ) : (
+                    <span className="font-medium">Prabhat</span>
+                  )}
+                </div>
+
+                {tags && tags.length > 0 && (
+                  <>
+                    <span className="text-gray-400">•</span>
+                    <div className="flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <Tag key={tag} text={tag} />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="border-t border-gray-100 dark:border-gray-800"></div>
             </div>
           </header>
 
-          <div className="prose max-w-none pb-8 pt-10 text-gray-900 dark:prose-invert dark:text-gray-100">
+          <div className="prose max-w-none pb-8 pt-0 text-gray-900 dark:prose-invert dark:text-gray-100">
             {children}
           </div>
 
