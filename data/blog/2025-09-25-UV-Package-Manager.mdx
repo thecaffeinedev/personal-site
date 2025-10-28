@@ -1,0 +1,278 @@
+---
+title: Managing Python Environments With UV
+date: 2025-09-25
+tags:
+  - python
+draft: false
+---
+
+I’ve been using Python since my college days — and it’s been almost five years of using it professionally now. Most of my work revolves around building API servers (FastAPI), writing automation scripts, and deep learning projects.
+
+If you’ve been around the Python ecosystem for a while, you know the chaos of package and environment managers — `venv`, `pipenv`, `poetry`, `pyenv`, `conda`, you name it. I’ve tried them all at some point, but none really clicked for me.
+
+For machine learning experiments, I’ve always relied on **miniconda**. For regular development, **virtualenvwrapper** has been my go-to. It’s simple and works well — except that the Python version you want needs to already be installed on your system. I still have a few old projects running on it, so it hasn’t completely left my setup yet.
+
+
+## Discovering UV
+
+Last year, I came across some posts on HackerNews and Lobsters about a new tool called **UV**, built by the folks at [Astral](https://astral.sh/) (the same team behind Ruff). It was described as a *superfast* Python package manager that aims to fix the long-standing dependency hell in Python.
+
+I ignored it at first. I’ve seen too many tools come and go, and every time I end up back with — virtualenv + miniconda.
+
+Earlier this year, sometime around summer 2025, I finally decided to give UV a real try. I’d seen people talking about it for months, but I’d been ignoring the hype. But UV hit different. I started using it for a few personal projects just to test it out. And at work, we've started adopting it across our microservices. It's fast, reliable, and just works.
+
+UV abstracts away so much of the old Python packaging pain — dependency resolution, environment isolation, Python version management. 
+
+
+## What Makes UV Different?
+
+- **It's Fast**: About 100 times faster than pip, which means less time waiting for dependencies to resolve.
+- **No Need for Admin Rights**: UV installs and manages packages in your user space. That's helpful in places with Active Directory or other restrictions where you can't install things system-wide.
+- **Handles Python Versions**: You don't need Python installed beforehand. UV can download and manage versions for you.
+- **Reproducible Builds**: It creates uv.lock files automatically, so you get consistent results every time.
+
+
+## Getting Started with UV
+
+### Installation
+
+ no `sudo` required:
+
+```bash
+# Linux/macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Verify installation
+uv --version
+```
+
+
+### Starting a New Project
+
+```bash
+# Create a project with a specific Python version
+uv init hello-stars --python 3.13
+
+cd hello-stars
+
+# uv automatically creates:
+# - pyproject.toml (modern Python standard)
+# - .python-version (pins Python version)
+# - .gitignore
+# - README.md
+# - main.py
+```
+
+
+### Managing Dependencies
+
+```bash
+# Add packages (auto-creates venv if needed)
+uv add fastapi uvicorn
+
+# Add dev dependencies
+uv add --dev black ruff pytest
+
+# Update all dependencies
+uv sync --upgrade
+
+# Remove unused package
+uv remove some-package
+```
+
+ **About `uv sync`**
+ `uv sync` is one of the most useful commands — it reads your `pyproject.toml` and `uv.lock` to install exactly what’s pinned.
+ If you change dependencies manually, or pull fresh code from GitHub, just run:
+
+```bash
+uv sync
+```
+
+and UV will make sure your local environment matches the lock file perfectly. It’s like `npm ci` for Python.
+
+
+### Running Your Code
+
+No more manual virtualenv activation — UV does that automatically.
+
+```bash
+# Run scripts
+uv run python main.py
+
+# Run tests or formatters
+uv run pytest
+uv run black .
+
+# Run without installing globally
+uvx ruff check .   # like `npx` for Python
+```
+
+
+## Common Gotchas (and Their Fixes)
+
+### Don’t activate virtual environments manually
+
+```bash
+# Old habit (Don't)
+source .venv/bin/activate
+python main.py
+
+# UV way (Do)
+uv run python main.py
+```
+
+
+### Always run from the project root
+
+Running from inside `src` can mess up imports.
+
+```bash
+# Can cause import issues (Don't)
+cd src && python ../scripts/test.py
+
+# Always run from root (Do)
+uv run python scripts/test.py
+```
+
+
+### Manage your cache
+
+UV caches Python versions and dependencies to speed up installs.
+
+```bash
+# Check cache info
+uv cache info
+
+# Clean occasionally
+uv cache clean
+```
+
+
+
+## Best Practices
+
+### Project Structure
+
+A clean and reproducible layout goes a long way:
+
+```
+my-project/
+├── pyproject.toml      # Single source of truth
+├── .python-version     # Python version for project
+├── uv.lock             # Commit this for reproducibility
+├── src/
+│   └── my_project/
+└── tests/
+```
+
+
+### Python Version Strategies
+
+```bash
+# For libraries – support multiple versions
+uv init my-lib --python ">=3.9"
+
+# For apps – pin a specific version
+uv init my-app --python 3.12
+uv python pin 3.12
+
+# Test across versions
+uv run --python 3.10 pytest
+uv run --python 3.11 pytest
+uv run --python 3.12 pytest
+```
+
+
+### Dependency Management Tips
+
+```bash
+# Use version ranges or pins when needed
+uv add "fastapi>=0.115,<0.120"
+uv add "pydantic==2.8.2"
+
+# Dev dependencies
+uv add --dev pytest mypy black ruff
+
+# Optional groups for docs, linting, etc.
+uv add --group docs sphinx mkdocs
+```
+
+
+### Keeping Dependencies Fresh
+
+```bash
+# Upgrade everything based on constraints
+uv sync --upgrade
+
+# Upgrade a specific package
+uv add fastapi@latest
+
+# Show outdated packages
+uv pip list --outdated
+```
+
+
+### Exporting Requirements
+
+If you need compatibility with old CI/CD setups that still use pip:
+
+```bash
+uv export --format requirements.txt > requirements.txt
+```
+
+You can then share that file with teams that haven’t moved to UV yet.
+
+
+### Using UV Tools
+
+UV can also handle globally installed CLI tools — no need for `pipx`.
+
+```bash
+# Install tools globally (user space)
+uv tool install black
+uv tool install ruff
+
+# Run them directly
+uvx black .
+uvx ruff check .
+```
+
+
+### Using UV With Legacy Pip Workflows
+
+Sometimes you’ll still have an older project with a `requirements.txt`. UV can handle that too:
+
+```bash
+uv pip install -r requirements.txt
+```
+
+This way you don’t have to change the project structure — UV just works with existing setups.
+
+
+## Quick Migration Guide (pip → uv)
+
+Here’s a simple mapping of common commands:
+
+| Task                      | Old Way                                       | New Way (UV)                         |
+| ------------------------- | --------------------------------------------- | ------------------------------------ |
+| Install Python            | `pyenv install 3.12`                          | `uv python install 3.12`             |
+| Create venv               | `python -m venv .venv`                        | `uv venv` *(auto-created)*           |
+| Add dependency            | `pip install fastapi`                         | `uv add fastapi`                     |
+| Install from requirements | `pip install -r requirements.txt`             | `uv pip install -r requirements.txt` |
+| Update deps               | `pip install -U -r requirements.txt`          | `uv sync --upgrade`                  |
+| Run script                | `source .venv/bin/activate && python main.py` | `uv run python main.py`              |
+| Install global tool       | `pipx install black`                          | `uv tool install black`              |
+
+
+### Things to Keep in Mind
+
+A few small but important details I’ve learned while using UV:
+
+- `uv sync` respects your `.python-version`, but if you set the `UV_PYTHON` environment variable, that will override it.
+- UV uses `python-build-standalone` internally — which might be 1–3% slower than your system Python, but it trades that for consistency across platforms.
+- Cache size can get pretty large over time (that’s the price you pay for speed and reliability). Just clean it up once in a while with `uv cache clean`.
+- If you’re working on older legacy projects, some installs might fail because UV is stricter with dependency resolution compared to pip’s older, looser behavior.
+
+## Final Thoughts
+
+After using UV for a few months, I can confidently say it’s one of the best tools to happen to Python in a while. It’s fast, reliable, and actually makes dependency management easier. 
