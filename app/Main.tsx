@@ -2,188 +2,132 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
-import NewsletterForm from 'pliny/ui/NewsletterForm'
 import SocialIcon from '@/components/social-icons'
 
-const MAX_DISPLAY = 4
+const MAX_DISPLAY = 3
 
 export default function Home({ posts }) {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="pb-8 pt-6">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:items-start">
-            <div className="space-y-4 lg:col-span-3">
-              <div>
-                <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14">
-                  Hi, I'm Prabhat. 👋
-                </h1>
-                <div className="mt-3 text-xl font-semibold text-primary-500">
-                  Senior Software Engineer
-                </div>
-                <div className="mt-1 text-lg text-gray-600 dark:text-gray-400">
-                  Polyglot Developer • Backend & Infrastructure
-                </div>
-                <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                  📍 Hyderabad, India
-                </div>
-              </div>
+        {/* Hero Section */}
+        <div className="pb-16 pt-8 md:pb-20 md:pt-12">
+          <div className="mx-auto max-w-2xl space-y-8 text-center">
+            {/* Main Headline */}
+            <div className="space-y-4">
+              <h1 className="text-5xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-gray-100 md:text-5xl">
+                Hi, I'm Prabhat. 👋
+              </h1>
 
-              <div className="pt-2">
-                <Link
-                  href="/about"
-                  className="inline-flex items-center gap-2 font-semibold text-gray-900 transition-colors hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
-                >
-                  About me →
-                </Link>
-              </div>
-
-              <div className="flex space-x-3 pt-2 sm:space-x-4">
-                <SocialIcon kind="github" href={siteMetadata.github} size={6} />
-                <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
-                <SocialIcon kind="x" href={siteMetadata.X} size={6} />
-                <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
-                <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
-              </div>
+              <p className="text-xl font-semibold text-primary-500 dark:text-primary-400">
+                Lead Software Engineer
+              </p>
             </div>
 
-            <div className="lg:col-span-2">
-              <div className="rounded-lg border border-gray-200 bg-gray-50 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                <div className="flex items-center gap-2 rounded-t-lg border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700 sm:px-4 sm:py-3">
-                  <div className="flex gap-2">
-                    <div className="h-3 w-3 rounded-full bg-red-500"></div>
-                    <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
-                  </div>
-                  <div className="ml-2 text-sm text-gray-600 dark:text-gray-300">main.go</div>
-                </div>
+            {/* Tagline / Hook */}
+            <div className="mx-auto max-w-lg space-y-2">
+              <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                Building scalable backend systems and ML infrastructure across the stack. Passionate
+                about distributed systems and solving real problems.
+              </p>
+              {/*<p className="text-sm text-gray-500 dark:text-gray-500">
+                📍 Hyderabad, India • 💼 Backend & Infrastructure Engineer
+              </p>*/}
+            </div>
 
-                <div className="p-3 font-mono text-xs sm:p-4 sm:text-sm">
-                  <div className="space-y-1">
-                    <div className="text-gray-500 dark:text-gray-400">// main.go</div>
-                    <div>
-                      <span className="text-purple-600 dark:text-purple-400">package</span>{' '}
-                      <span className="text-blue-600 dark:text-blue-400">main</span>
-                    </div>
-                    <div className="mt-2"></div>
-                    <div>
-                      <span className="text-purple-600 dark:text-purple-400">func</span>{' '}
-                      <span className="text-yellow-600 dark:text-yellow-400">main</span>
-                      <span className="text-gray-700 dark:text-gray-300">() {`{`}</span>
-                    </div>
-                    <div className="ml-4 space-y-1">
-                      <div>
-                        <span className="text-blue-600 dark:text-blue-400">prabhat</span>{' '}
-                        <span className="text-gray-700 dark:text-gray-300">:=</span>{' '}
-                        <span className="text-green-600 dark:text-green-400">Developer</span>
-                        <span className="text-gray-700 dark:text-gray-300">{`{`}</span>
-                      </div>
-                      <div className="ml-4 space-y-1">
-                        <div>
-                          <span className="text-red-600 dark:text-red-400">Role</span>
-                          <span className="text-gray-700 dark:text-gray-300">:</span>{' '}
-                          <span className="text-green-600 dark:text-green-400">"Senior SWE"</span>
-                          <span className="text-gray-700 dark:text-gray-300">,</span>
-                        </div>
-                        <div>
-                          <span className="text-red-600 dark:text-red-400">Interests</span>
-                          <span className="text-gray-700 dark:text-gray-300">:</span>{' '}
-                          <span className="text-green-600 dark:text-green-400">
-                            "Distributed Systems"
-                          </span>
-                          <span className="text-gray-700 dark:text-gray-300">,</span>
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-gray-700 dark:text-gray-300">{`}`}</span>
-                      </div>
-                      <div className="mt-2"></div>
-                      <div>
-                        <span className="text-blue-600 dark:text-blue-400">prabhat</span>
-                        <span className="text-gray-700 dark:text-gray-300">.</span>
-                        <span className="text-yellow-600 dark:text-yellow-400">Work</span>
-                        <span className="text-gray-700 dark:text-gray-300">()</span>
-                      </div>
-                    </div>
-                    <div className="text-gray-700 dark:text-gray-300">{`}`}</div>
-                  </div>
-                </div>
-              </div>
+            {/* CTA Buttons */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
+              <Link
+                href="/about"
+                className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-8 py-3 font-semibold text-white transition-all duration-200 hover:bg-primary-700 hover:shadow-lg active:scale-95 dark:bg-primary-500 dark:hover:bg-primary-600"
+              >
+                About Me
+                <span className="ml-2">→</span>
+              </Link>
+              <Link
+                href="/blog"
+                className="inline-flex items-center justify-center rounded-lg border-2 border-gray-300 px-8 py-3 font-semibold text-gray-900 transition-all duration-200 hover:border-primary-500 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-100 dark:hover:border-primary-500 dark:hover:bg-gray-800"
+              >
+                Read Blog
+                <span className="ml-2">→</span>
+              </Link>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex justify-center gap-4 pt-4">
+              <SocialIcon kind="github" href={siteMetadata.github} size={6} />
+              <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
+              <SocialIcon kind="x" href={siteMetadata.X} size={6} />
+              <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
+              <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
             </div>
           </div>
         </div>
 
-        <div className="pt-8">
-          <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Recent Blog Posts
+        {/* Recent Posts Section */}
+        <div className="pt-12">
+          <h2 className="mb-8 text-2xl font-bold text-gray-900 dark:text-gray-100">
+            Recent Articles
           </h2>
-          <div className="space-y-1">
-            {!posts.length && 'No posts found.'}
+
+          <div className="space-y-3">
+            {!posts.length && <div className="text-center text-gray-500">No posts found.</div>}
             {posts.slice(0, MAX_DISPLAY).map((post) => {
               const { slug, date, title, summary, tags } = post
               return (
                 <article
                   key={slug}
-                  className="group rounded-lg p-4 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                  className="group rounded-lg border border-gray-200 p-4 transition-all duration-200 hover:border-primary-500 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:hover:bg-gray-800/50"
                 >
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-4">
-                    <time
-                      dateTime={date}
-                      className="text-sm font-medium text-gray-500 dark:text-gray-400 sm:min-w-[80px]"
-                    >
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-semibold text-gray-900 transition-colors group-hover:text-primary-600 dark:text-gray-100 dark:group-hover:text-primary-400">
+                        <Link href={`/blog/${slug}`}>{title}</Link>
+                      </h3>
+
+                      <p className="mt-1 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">
+                        {summary}
+                      </p>
+
+                      {tags && tags.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {tags.slice(0, 2).map((tag) => (
+                            <span
+                              key={tag}
+                              className="text-xs font-medium uppercase text-gray-500 dark:text-gray-400"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <time className="text-sm text-gray-500 dark:text-gray-400 sm:min-w-fit">
                       {new Date(date).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                       })}
                     </time>
-
-                    <div className="flex-1">
-                      <h2 className="text-lg font-semibold leading-tight">
-                        <Link
-                          href={`/blog/${slug}`}
-                          className="text-gray-900 transition-colors hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
-                        >
-                          {title}
-                        </Link>
-                      </h2>
-
-                      <div className="mt-1 flex flex-wrap gap-2">
-                        {tags.slice(0, 2).map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-xs font-medium uppercase tracking-wide text-primary-600 dark:text-primary-400"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
                   </div>
                 </article>
               )
             })}
           </div>
+
+          {posts.length > MAX_DISPLAY && (
+            <div className="mt-8 text-center">
+              <Link
+                href="/blog"
+                className="inline-flex items-center font-semibold text-primary-600 transition-colors hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+              >
+                View all articles
+                <span className="ml-2">→</span>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
-
-      {posts.length > MAX_DISPLAY && (
-        <div className="flex justify-end text-base font-medium leading-6">
-          <Link
-            href="/blog"
-            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-            aria-label="All posts"
-          >
-            All Posts &rarr;
-          </Link>
-        </div>
-      )}
-
-      {/* Newsletter Section (uncomment if needed) */}
-      {/* {siteMetadata.newsletter?.provider && (
-        <div className="flex items-center justify-center pt-4">
-          <NewsletterForm />
-        </div>
-      )} */}
     </>
   )
 }
