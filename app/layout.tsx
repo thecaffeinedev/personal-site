@@ -17,6 +17,8 @@ const space_grotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
 })
 
+// In app/layout.tsx, update the metadata object like this:
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),
   title: {
@@ -54,6 +56,43 @@ export const metadata: Metadata = {
     title: siteMetadata.title,
     card: 'summary_large_image',
     images: [siteMetadata.socialBanner],
+  },
+  other: {
+    'application/ld+json': JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'Prabhat Kumar Sahu',
+      alternateName: ['Prabhat Kumar', 'caffeinedev', 'thecaffeinedev', 'iprabhat'],
+      jobTitle: 'Senior Software Engineer',
+      image: 'https://iprabhat.dev/static/images/avatar-prabhat.jpeg',
+      url: 'https://iprabhat.dev',
+      sameAs: [
+        'https://github.com/thecaffeinedev',
+        'https://www.linkedin.com/in/prabhat-kumar-sahu-b9a53674/',
+        'https://x.com/thecaffeinedev',
+        'https://www.youtube.com/channel/UC-756oKXdvH8GZEDF7GHIlw',
+        'https://www.instagram.com/caffeinedev/',
+      ],
+      description:
+        'Senior Software Engineer interested in distributed systems, databases, backend infrastructure, and machine learning.',
+      worksFor: {
+        '@type': 'Organization',
+        name: 'DeepEdge',
+      },
+      knowsAbout: [
+        'Backend Infrastructure',
+        'Distributed Systems',
+        'Databases',
+        'Machine Learning',
+        'Python',
+        'Go',
+        'Software Design',
+      ],
+      location: {
+        '@type': 'Place',
+        name: 'Hyderabad, India',
+      },
+    }),
   },
 }
 

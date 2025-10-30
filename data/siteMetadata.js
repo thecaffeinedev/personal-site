@@ -1,9 +1,10 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Personal Blog ',
+  title: 'Prabhat Kumar Sahu | Backend & Infrastructure',
   author: 'Prabhat',
   // headerTitle: 'TailwindBlog',
-  description: 'I am a software engineer 🧑🏻‍💻 based in Hyderabad, India, who enjoys building things.',
+  description:
+    'Software engineer writing about distributed systems, databases, and backend infrastructure.',
   language: 'en-us',
   theme: 'dark', // system, dark or light
   siteUrl: process.env.NODE_ENV === 'production' ? 'https://iprabhat.dev' : 'http://localhost:3001',
